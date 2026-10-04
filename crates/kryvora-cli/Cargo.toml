@@ -1,0 +1,39 @@
+# file: crates/kryvora-cli/Cargo.toml
+[package]
+name                   = "kryvora-cli"
+version.workspace      = true
+edition.workspace      = true
+rust-version.workspace = true
+license.workspace      = true
+authors.workspace      = true
+description            = "KRYVORA command-line driver."
+
+[[bin]]
+name = "kryvora"
+path = "src/main.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+kryvora-core       = { workspace = true }
+kryvora-integrity  = { workspace = true }
+kryvora-db         = { workspace = true }
+kryvora-evidence   = { workspace = true }
+kryvora-audit      = { workspace = true }
+kryvora-storage    = { workspace = true }
+kryvora-policy     = { workspace = true }
+kryvora-jobs       = { workspace = true }
+kryvora-sanitize   = { workspace = true }
+kryvora-carving    = { workspace = true }
+kryvora-recovery   = { workspace = true }
+kryvora-provenance = { workspace = true }
+kryvora-report     = { workspace = true }
+rusqlite           = { workspace = true }
+clap               = { workspace = true }
+serde_json         = { workspace = true }
+time               = { workspace = true }
+uuid               = { workspace = true }
+
+[dev-dependencies]
+tempfile = "3"

@@ -1,0 +1,22 @@
+[package]
+name                   = "kryvora-integrity"
+version.workspace      = true
+edition.workspace      = true
+rust-version.workspace = true
+license.workspace      = true
+authors.workspace      = true
+description            = "Streaming SHA-256 hashing and integrity verification for KRYVORA."
+
+[lints]
+workspace = true
+
+[dependencies]
+kryvora-core = { workspace = true }
+serde        = { workspace = true }
+sha2         = { workspace = true }
+hex          = { workspace = true }
+time         = { workspace = true }
+thiserror    = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }

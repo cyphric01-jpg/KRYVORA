@@ -1,0 +1,83 @@
+﻿[workspace]
+resolver = "2"
+members = [
+    "crates/kryvora-core",
+    "crates/kryvora-integrity",
+    "crates/kryvora-db",
+    "crates/kryvora-evidence",
+    "crates/kryvora-audit",
+    "crates/kryvora-cli",
+    "crates/kryvora-storage",
+    "crates/kryvora-policy",
+    "crates/kryvora-jobs",
+    "crates/kryvora-sanitize",
+    "crates/kryvora-carving",
+    "crates/kryvora-recovery",
+    "crates/kryvora-provenance",
+    "crates/kryvora-report",
+]
+
+[workspace.package]
+version      = "0.1.0"
+edition      = "2021"
+rust-version = "1.85"
+license      = "MIT OR Apache-2.0"
+authors      = ["KRYVORA Engineering"]
+
+[workspace.dependencies]
+# Domain
+serde      = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror  = "1"
+time       = { version = "=0.3.41", features = ["serde", "formatting", "parsing"] }
+uuid       = { version = "1", features = ["v4", "serde"] }
+
+# Hashing / encoding
+sha2       = "0.10"
+hex        = "0.4"
+
+# Storage
+rusqlite   = { version = "0.32", features = ["bundled"] }
+
+# CLI
+clap       = { version = "4", features = ["derive", "env"] }
+
+# System facts
+sysinfo    = "0.32"
+
+# Random
+getrandom  = "0.2"
+
+# Search
+memchr     = "2"
+same-file  = "1"
+
+# Internal crates
+kryvora-core      = { path = "crates/kryvora-core" }
+kryvora-integrity = { path = "crates/kryvora-integrity" }
+kryvora-db        = { path = "crates/kryvora-db" }
+kryvora-evidence  = { path = "crates/kryvora-evidence" }
+kryvora-audit     = { path = "crates/kryvora-audit" }
+kryvora-cli       = { path = "crates/kryvora-cli" }
+kryvora-storage   = { path = "crates/kryvora-storage" }
+kryvora-policy    = { path = "crates/kryvora-policy" }
+kryvora-jobs      = { path = "crates/kryvora-jobs" }
+kryvora-sanitize  = { path = "crates/kryvora-sanitize" }
+kryvora-carving   = { path = "crates/kryvora-carving" }
+kryvora-recovery  = { path = "crates/kryvora-recovery" }
+kryvora-provenance = { path = "crates/kryvora-provenance" }
+kryvora-report = { path = "crates/kryvora-report" }
+
+[workspace.lints.rust]
+unsafe_code                   = "forbid"
+rust_2018_idioms              = { level = "warn", priority = -1 }
+unused_lifetimes              = "warn"
+missing_debug_implementations = "warn"
+
+[workspace.lints.clippy]
+unwrap_used   = "deny"
+expect_used   = "deny"
+panic         = "deny"
+todo          = "deny"
+unimplemented = "deny"
+dbg_macro     = "deny"

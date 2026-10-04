@@ -1,0 +1,36 @@
+# file: crates/kryvora-sanitize/Cargo.toml
+[package]
+name                   = "kryvora-sanitize"
+version.workspace      = true
+edition.workspace      = true
+rust-version.workspace = true
+license.workspace      = true
+authors.workspace      = true
+description            = "Secure file and folder sanitization for KRYVORA."
+
+[lints]
+workspace = true
+
+[dependencies]
+kryvora-core      = { workspace = true }
+kryvora-integrity = { workspace = true }
+kryvora-audit     = { workspace = true }
+kryvora-jobs      = { workspace = true }
+kryvora-storage   = { workspace = true }
+rusqlite          = { workspace = true }
+getrandom         = { workspace = true }
+sysinfo           = { workspace = true }
+serde             = { workspace = true }
+serde_json        = { workspace = true }
+thiserror         = { workspace = true }
+time              = { workspace = true }
+same-file         = { workspace = true }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+kryvora-db       = { workspace = true }
+kryvora-policy   = { workspace = true }
+kryvora-storage  = { workspace = true }
+tempfile         = "3"

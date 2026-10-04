@@ -1,0 +1,26 @@
+[package]
+name                   = "kryvora-report"
+version.workspace      = true
+edition.workspace      = true
+rust-version.workspace = true
+license.workspace      = true
+authors.workspace      = true
+description            = "HTML report generation for KRYVORA."
+
+[lints]
+workspace = true
+
+[dependencies]
+kryvora-core      = { workspace = true }
+kryvora-integrity = { workspace = true }
+kryvora-db        = { workspace = true }
+kryvora-recovery  = { workspace = true }
+kryvora-sanitize  = { workspace = true }
+serde             = { workspace = true }
+serde_json        = { workspace = true }
+thiserror         = { workspace = true }
+time              = { workspace = true }
+
+[dev-dependencies]
+rusqlite = { workspace = true }
+tempfile = "3"

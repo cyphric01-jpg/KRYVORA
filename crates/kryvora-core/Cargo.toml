@@ -1,0 +1,20 @@
+﻿[package]
+name                   = "kryvora-core"
+version.workspace      = true
+edition.workspace      = true
+rust-version.workspace = true
+license.workspace      = true
+authors.workspace      = true
+description            = "KRYVORA domain types, identifiers, errors, and state enums."
+
+[lints]
+workspace = true
+
+[dependencies]
+serde     = { workspace = true }
+thiserror = { workspace = true }
+time      = { workspace = true }
+uuid      = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
