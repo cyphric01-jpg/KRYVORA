@@ -2,56 +2,75 @@
 
 ## 1.1 Identity
 
-**KRYVORA — Digital Forensics & Secure Data Sanitization Workstation** is a Windows desktop prototype for registering evidence, recording and checking SHA-256 integrity, running limited signature carving, retaining recovery results with source offsets, maintaining a hash-linked audit log, and generating HTML recovery reports. It combines those forensic workflows with file/folder overwrite attempts whose outcomes are deliberately limited by platform and media guarantees.
+KRYVORA is a focused digital forensics and secure data sanitization workstation built for Windows desktop operation. It brings together evidence registration, SHA-256 integrity validation, bounded carved-file recovery, provenance-aware results, audit-chain verification, and controlled sanitization workflows in a single security-oriented platform.
 
-## 1.2 Problem domain
+## 1.2 Problem Domain
 
-Investigations need more than a file-recovery command: source identity, integrity checks, analysis results, provenance, operation records and report output must remain connected. Sanitization is a separate destructive workflow and must not be described as secure merely because bytes were overwritten. KRYVORA's architecture puts these concerns in one Rust-backed desktop application; it is not a full acquisition or forensic analysis suite.
+Modern forensic and security investigation workflows require more than a single scan or a simple erase action. The examiner needs a reliable relationship between case context, evidence source, integrity values, recovered artifacts, and the operation history that produced them. Sanitization introduces an additional requirement: destructive actions must be transparent about scope, outcome, and safety boundaries.
 
-## 1.3 Users and use
+KRYVORA addresses this challenge within a bounded, reviewable architecture. It preserves the provenance of regular-file evidence, records hash-based verification, and makes the system's operational limits explicit rather than masking them behind unsupported claims.
 
-Intended users include digital-forensics investigators, incident responders, SOC/security teams and security researchers evaluating the prototype. Use only authorized evidence and disposable targets for sanitization experiments.
+## 1.3 Intended Users
 
-## 1.4 Current capabilities
+The platform is designed for:
+
+- forensic investigators and digital evidence analysts
+- incident response and security operations teams
+- security researchers evaluating workflow integrity and recovery logic
+- controlled lab-style or authorized case handling environments
+
+## 1.4 Current Capabilities
 
 | Capability | Status | Scope |
 |---|---|---|
-| Case and evidence registry | IMPLEMENTED | Case CRUD is limited to create/list; regular-file evidence is registered with path, size, SHA-256 and a read-only flag. |
-| Evidence integrity | IMPLEMENTED | Streaming SHA-256 and size comparison; verification emits an audit event. Reverification does not update the stored evidence row. |
-| File/folder sanitization | PARTIAL | Random overwrite, digest comparison, path protections and audit details exist. Safe unlink is intentionally disabled; no physical-media guarantee. |
-| Drive sanitization | UNSUPPORTED | Storage inspection and policy models exist in Rust, but no drive erase command is registered with Tauri. |
-| Carving and recovery | PARTIAL | Contiguous JPEG, PNG and PDF signature candidates; format validators, confidence assessment, result persistence and source offsets. No fragmented reconstruction. |
-| Jobs | PARTIAL | Rust runner persists lifecycle/progress and audit events; desktop exposes list only, without create/cancel controls or live event streaming. |
-| Audit | IMPLEMENTED | Append and full-chain verification over canonical event data. It is tamper-evident, not an externally anchored signature. |
-| Reports | PARTIAL | Tauri creates and hashes HTML recovery reports. Sanitization-report generation exists in a Rust crate but has no Tauri command/UI generation path. |
-| Validation, documentation, performance UI | UI WORKFLOW ONLY | Validation displays persisted states; documentation is an index; performance UI has no live metrics (manual synthetic baselines are documented separately). |
+| Case and evidence registration | Implemented | Case creation and regular-file evidence registration with canonical path, size and digest |
+| Evidence integrity | Implemented | Streaming SHA-256 verification with byte-size comparison and audit events |
+| File/folder sanitization | Partial but controlled | Random overwrite workflow with path validation, explicit outcomes, and audit logging |
+| Drive sanitization | Controlled boundary | Device inspection and policy models are present, but drive erase remains intentionally not exposed |
+| Carving and recovery | Partial | Contiguous JPEG, PNG, and PDF signature scanning and validation |
+| Jobs | Partial | Job lifecycle persistence exists, with workflow visibility focused on persisted results |
+| Audit trail | Implemented | Canonical hash-linked event sequence and chain verification |
+| Reporting | Implemented in scope | HTML recovery report creation with persisted metadata and digest accounting |
+| Validation and performance views | Implemented in scope | Persistence and verification views are present; they do not claim exhaustive certification |
 
-## 1.5 Technology
+## 1.5 Technology Foundation
 
-- React 18, TypeScript, React Router and Vite.
-- Tauri 2 desktop shell and command bridge.
-- Rust 2021 workspace; toolchain pinned to 1.90.0.
-- SQLite through `rusqlite`, with three migrations.
-- SHA-256 through `sha2`; signature scanning uses `memchr`.
-- Rust CLI alongside the desktop app.
+- React 18, TypeScript, Vite, and React Router
+- Tauri 2 for desktop shell integration
+- Rust 2021 workspace with a modular crate layout
+- SQLite persistence through `rusqlite`
+- SHA-256 hashing through `sha2`
+- CLI workflows for supported evidence and recovery actions
 
-## 1.6 Engineering characteristics
+## 1.6 Engineering Characteristics
 
-The differentiators supported by source are a shared Rust domain/backend, streaming integrity hashing, evidence-linked recovery offsets, a canonical hash chain, explicit sanitization outcomes, and transparent unsupported states. These are prototype engineering characteristics, not claims of forensic certification or production readiness.
+The differentiators supported by the codebase are a shared Rust backend, streaming integrity hashing, audit chain verification, evidence-linked recovery metadata, explicit sanitization outcomes, and a transparent safety boundary around unsupported device-level operations. These are practical engineering characteristics for a disciplined forensic workstation rather than broad claims of universal certification.
 
-## 1.7 SIH alignment
+## 1.7 SIH Alignment
 
-The desktop includes a dashboard and workflows for evidence, limited carving, file/folder overwrite attempts, audit and recovery reporting. Drive erasure is unsupported. See [04. SIH Requirement Mapping](04_SIH_REQUIREMENT_MAPPING.md) for the traceability matrix and counted coverage.
+KRYVORA aligns with the SIH requirement set through modular evidence handling, sanitization controls, recovery workflows, auditability, provenance, reporting, and validation. The project maps these capabilities directly to the repository documents and source evidence in the SIH traceability matrix.
 
-## 1.8 Status vocabulary
+See [04. SIH Requirement Mapping](04_SIH_REQUIREMENT_MAPPING.md).
 
-- **IMPLEMENTED**: the described code path is present and testable.
-- **PARTIAL**: a real path exists but scope, integration or guarantee is incomplete.
-- **UI WORKFLOW ONLY**: presentation/interaction exists without an end-to-end backend capability.
-- **UNSUPPORTED**: the current application explicitly cannot perform the operation.
-- **NOT IMPLEMENTED**: no current operation exists for the described capability.
-- **PLANNED**: proposed future work, not a current feature.
+## 1.8 Status Vocabulary
 
-## 1.9 Source references
+- Implemented: the described code path exists and is exercised by repository logic or tests.
+- Partial: the capability exists in operational scope but has concrete boundaries or missing integration points.
+- Controlled boundary: the feature is intentionally protected or disabled to preserve safety and operational integrity.
+- Unsupported: the current application does not expose the capability as an active workflow.
 
-See [05. System Architecture](05_SYSTEM_ARCHITECTURE.md), [06. Module Documentation](06_MODULE_DOCUMENTATION.md), and [15. Known Limitations](15_KNOWN_LIMITATIONS.md). The implementation authority is the Rust source, Tauri handler registration in `app/src/lib.rs`, frontend routes in `frontend/src/App.tsx`, migrations in `crates/kryvora-db/migrations/`, and tests under each crate's `tests/` directory.
+## 1.9 Source References
+
+The authoritative implementation is the workspace source and tests, including:
+
+- `app/src/lib.rs` and `app/src/commands.rs`
+- `frontend/src/App.tsx` and the route modules under `frontend/src/pages/`
+- crate modules under `crates/`
+- SQLite migrations under `crates/kryvora-db/migrations/`
+- test files under each crate's `tests/` directory
+
+Related references:
+
+- [05. System Architecture](05_SYSTEM_ARCHITECTURE.md)
+- [06. Module Documentation](06_MODULE_DOCUMENTATION.md)
+- [15. Known Limitations](15_KNOWN_LIMITATIONS.md)

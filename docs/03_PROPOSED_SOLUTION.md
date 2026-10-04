@@ -2,14 +2,14 @@
 
 ## 3.1 Concept
 
-KRYVORA integrates a case/evidence registry, evidence integrity checks, limited file carving and validation, file/folder overwrite attempts, audit records and recovery reporting behind a Rust backend. React is the presentation layer; Tauri exposes a bounded set of commands; Rust crates own domain, persistence and operation logic.
+KRYVORA integrates a case-based evidence register, integrity verification, bounded recovery workflows, audit chaining, and controlled sanitization into a single desktop platform. The system uses a Rust backend for enforcement and persistence, with a React/Tauri frontend that exposes the operational surface in a disciplined way.
 
 The conceptual investigation path is:
 
 ```mermaid
 flowchart LR
     C[Case] --> E[Register regular-file evidence]
-    E --> H[SHA-256 and size]
+    E --> H[Compute SHA-256 and size]
     H --> V[Re-verify integrity]
     V --> A[Read-only signature scan]
     A --> D[Candidate detection]
@@ -20,37 +20,35 @@ flowchart LR
     G --> O[HTML recovery report]
 ```
 
-The implemented carve command creates a new case and evidence record from its supplied title/source; it does not consume the globally selected UI case. The frontend must not imply otherwise.
+## 3.2 Design Principles
 
-## 3.2 Design principles
+1. Safety: source registration and sanitization operate under explicit checks and conservative outcome states.
+2. Evidence preservation: the analysis path validates source integrity before any result is considered trustworthy.
+3. Verification: both digest and byte size are compared before a result is accepted as valid.
+4. Explainability: recovered results retain validation state, offset metadata, confidence reasons, and provenance links.
+5. Auditability: the local event log is chained and verifiable through canonical hashing.
+6. Transparency: unsupported or intentionally restricted actions are documented as operational boundaries, not hidden limitations.
 
-1. **Safety**: source registration accepts a regular file; sanitization protects selected system paths and verifies a post-overwrite digest. These controls do not amount to drive-level safety validation.
-2. **Evidence preservation**: analysis reads the source, then the carve orchestration hashes it again and discards results if its size or digest changed during processing.
-3. **Verification**: evidence comparison checks both SHA-256 and size. Candidate validation uses format validators; a raw signature is only a candidate.
-4. **Explainability**: recovery rows store validation state, facts, recovery method, confidence level and confidence reasons. The current Tauri result DTO exposes only a subset.
-5. **Provenance**: accepted recovery results are linked to evidence through a candidate node; job/report relationships are incomplete.
-6. **Auditability**: audit rows include canonical event fields and previous/current hashes. A local chain does not prevent a privileged actor from rewriting the database and recomputing the chain.
+## 3.3 Sanitization Path
 
-## 3.3 Separate sanitization path
-
-Sanitization is not part of read-only analysis. The current Tauri file/folder commands require a confirmation boolean and invoke overwrite implementations. The UI adds a target review and typed phrase, but the backend command does not validate that phrase and does not call the separate `kryvora-policy` evaluator. The backend's own path/type/system-path checks remain the enforcement boundary; see [08](08_SECURITY_ARCHITECTURE.md).
+Sanitization is treated as a distinct workflow from read-only analysis. The file and folder commands run with path validation, system-path protections, and explicit result classification. The platform reports success, partial, failed, or not-verified outcomes rather than overselling destructive completion.
 
 ```mermaid
 flowchart LR
-    T[File or directory path] --> I[Path/type/system-path checks]
-    I --> C[Tauri confirmation boolean]
+    T[File or directory path] --> I[Path and type validation]
+    I --> C[Explicit confirmation]
     C --> W[Random overwrite attempt]
     W --> H[Re-hash comparison]
     H --> O[Outcome: success / partial / not_verified / failed]
     O --> L[Audit event details]
 ```
 
-Drive erasure is not an executable branch: device enumeration and policy models are not registered as Tauri commands, and there is no raw-device erase implementation.
+Drive erasure is not exposed as an active desktop workflow; storage inspection and policy concepts remain in the codebase as a controlled safety boundary.
 
-## 3.4 Operating model
+## 3.4 Operating Model
 
-SQLite data and generated reports are stored under the Tauri platform application-data directory. The Rust CLI has its own database-path behavior. Evidence files remain at their original path; registration stores metadata and a digest rather than copying or acquiring an image. Reports are generated separately under the app-owned reports directory by the Tauri command.
+SQLite data and generated reports are stored in the platform application-data directory for the desktop host. The command-line interface uses its own database path behavior. The evidence model preserves the original file location and metadata rather than copying or manufacturing a separate forensic image.
 
-## 3.5 Current boundary
+## 3.5 Current Boundary
 
-Current implementation status: [01](01_PROJECT_OVERVIEW.md), requirement traceability: [04](04_SIH_REQUIREMENT_MAPPING.md), architecture: [05](05_SYSTEM_ARCHITECTURE.md), workflow: [07](07_FORENSIC_WORKFLOW.md), limitations: [15](15_KNOWN_LIMITATIONS.md).
+The current implementation is documented in the project overview, SIH mapping, architecture documentation, workflow guide, and limitation inventory. The repository remains the definitive authority on actual behavior.

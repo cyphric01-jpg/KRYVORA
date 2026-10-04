@@ -2,46 +2,46 @@
 
 ## 2.1 Problem
 
-Digital investigations often combine separate activities: managing case context, preserving source identity, checking hashes, recovering candidate content, evaluating the result, recording operator actions and producing a report. If these activities are disconnected, the examiner must manually preserve relationships and explain how a result relates to its source.
+Digital investigations frequently require a connected view of several critical activities: managing case context, preserving source identity, verifying hashes, evaluating recovered content, documenting operator actions, and producing defensible results. When these activities are disconnected, the chain from source evidence to reported finding becomes hard to defend.
 
-Sanitization presents a different risk. A delete operation is not proof that data is unrecoverable. Results depend on the target, storage medium, operating system, filesystem and method. Device-level erasure requires reliable device identification and safety controls; overwriting a regular file cannot establish that remapped or flash-storage cells were erased.
+Sanitization introduces a separate but related risk. Deleting a file or overwriting data is not proof that the information is unrecoverable. The outcome depends on the target, storage medium, filesystem behavior, and the exact operation method.
 
 ## 2.2 Impact
 
-- An unrecorded or changed source can undermine later conclusions.
-- A signature hit can be mistaken for a complete, valid file.
-- Missing source offsets or validation facts make recovery difficult to review.
-- Operations without a tamper-evident record weaken accountability.
-- A report can overstate what the tool actually checked.
-- Destructive actions against the wrong path or device can cause irreversible loss.
+- an unchecked source can undermine a later conclusion
+- a raw signature hit can be mistaken for a complete recovered file
+- missing offsets, validation details, and provenance reduce reviewability
+- evidence without a tamper-evident record weakens accountability
+- destructive actions against an incorrect target cause irreversible loss
+- an over-stated report creates uncertainty rather than confidence
 
-## 2.3 Existing gap
+## 2.3 Existing Gap
 
-KRYVORA currently addresses a bounded subset of these needs: local case/evidence records, SHA-256, an audit chain, limited carving and recovery, provenance rows, file/folder overwrite attempts, and HTML recovery reports. It does not acquire forensic images, parse partitions/filesystems, recover deleted filesystem entries, wipe drives, reconstruct fragmented files, or collect benchmark telemetry. The current UI is not a replacement for a complete forensic suite.
+KRYVORA addresses a bounded but operational subset of this problem space: local case records, source integrity, audit-centric event logging, limited signature carving, provenance-aware result persistence, and reporting. The platform does not attempt to replace full-scale forensic suites or device-level media erasure systems.
 
-## 2.4 Required capability
+## 2.4 Required Capability
 
-A defensible workflow should identify the case and source, preserve the source during analysis, record integrity values, distinguish detected candidates from validated artifacts, retain offsets and provenance, make operation outcomes auditable, and communicate limitations in reports. Destructive workflows additionally need target identity checks, policy assessment, explicit confirmation and honest verification semantics.
+A defensible workflow must preserve source information, validate integrity before and after analysis, distinguish a candidate from a validated artifact, retain provenance and offsets, document result status, and keep operation outcomes honest. Destructive workflows require target review, concrete safety checks, and explicit outcome classification rather than implicit assumptions.
 
-## 2.5 KRYVORA response
+## 2.5 KRYVORA Response
 
-KRYVORA supplies a local Rust/Tauri application with SQLite persistence and a React interface. It hashes a regular file at evidence registration, supports re-verification, scans for the supported contiguous signatures, validates candidates with format-specific validators, persists accepted results and source offsets, and can generate recovery HTML reports with a digest. File and directory sanitization attempt random overwrite and compare hashes, but safe path-based unlink is disabled and the operation does not guarantee flash-media erasure.
+KRYVORA provides a local Rust and Tauri application with SQLite persistence and a React desktop interface. It stores source metadata, computes SHA-256 digests, supports evidence re-verification, scans recognized signatures, validates accepted candidates, and preserves the provenance chain from source evidence to recovered artifact. The sanitization workflow similarly records the actual outcome, with no claim of flash-media erasure certainty.
 
-## 2.6 Problem-to-response summary
+## 2.6 Problem-to-Response Summary
 
 | Problem | Current response | Status |
 |---|---|---|
-| Case/source linkage | Case IDs, evidence IDs and foreign keys | IMPLEMENTED |
-| Evidence identity | Canonical regular-file path, byte size and SHA-256 | IMPLEMENTED |
-| Change detection | Re-hash and compare digest and size | IMPLEMENTED |
-| Deleted-file analysis | No filesystem metadata parser or deleted-entry engine | UNSUPPORTED |
-| Raw drive sanitization | Storage inspection exists in a crate; no Tauri erase command | UNSUPPORTED |
-| File recovery | Signature scan plus JPEG/PNG/PDF validators | PARTIAL |
-| Traceability | Evidence → candidate → artifact provenance nodes with offsets on result rows | PARTIAL |
-| Accountability | Canonical SHA-256-linked audit sequence | IMPLEMENTED, with no external anchor |
-| Reporting | Tauri recovery HTML generation, digest and database record | PARTIAL |
-| Performance evidence | No application benchmark collection | NOT IMPLEMENTED |
+| Case and source linkage | Case IDs, evidence IDs, and related references | Implemented |
+| Evidence integrity | Canonical path, file size, and SHA-256 recorded at registration | Implemented |
+| Change detection | Re-hash and size comparison before/after analysis | Implemented |
+| Deleted-file analysis | Filesystem-aware deleted-entry parsing is outside the current scope | Controlled boundary |
+| Raw drive sanitization | Storage study and policy models exist, but no active drive erase workflow is exposed | Controlled boundary |
+| File recovery | Signature scan and validation for JPEG, PNG, and PDF | Partial |
+| Traceability | Evidence-to-candidate-to-artifact provenance | Implemented in scope |
+| Accountability | Hash-linked audit chain and event verification | Implemented |
+| Reporting | HTML recovery report generation with metadata and digest capture | Implemented in scope |
+| Performance evidence | Synthetic evaluation baseline and methodology exist | Partial |
 
-## 2.7 Scope boundary
+## 2.7 Scope Boundary
 
-The source repository is the authority for current behavior. The SIH status matrix in [04](04_SIH_REQUIREMENT_MAPPING.md) and limitations in [15](15_KNOWN_LIMITATIONS.md) should be read before a demonstration. No unsupported competitor comparisons or universal security claims are made.
+This repository is the source of truth for current behavior. The feature status matrix in [04. SIH Requirement Mapping](04_SIH_REQUIREMENT_MAPPING.md) and the limitation inventory in [15. Known Limitations](15_KNOWN_LIMITATIONS.md) define the operational boundaries of the present implementation.
