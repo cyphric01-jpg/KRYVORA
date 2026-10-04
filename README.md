@@ -33,11 +33,13 @@ The project is designed for:
 |---|---|---|
 | Case and evidence registration | Implemented | Case creation and regular-file evidence registration with canonical path, size, and SHA-256 data |
 | Evidence integrity verification | Implemented | Streaming SHA-256 verification with size comparison and audit logging |
-| File carving and recovery | Partial but operational | Signature scanning and validation for contiguous JPEG, PNG, and PDF content |
+| File carving and recovery | Implemented — Supported Artifact Scope | Operational bounded carving and validated recovery for supported artifact formats, with integrity checks, validation, provenance, and controlled output |
 | Provenance and audit trail | Implemented | Persisted evidence-to-candidate-to-artifact relationships and hash-linked event tracking |
 | Reporting | Implemented in scope | HTML recovery reporting with metadata persistence and digest capture |
-| File and folder sanitization | Partial | Random overwrite workflow with safety checks, outcome classification, and audit recording |
-| Secure drive sanitization | Controlled boundary | Device inspection and policy models exist, but drive erasure is intentionally not exposed as an active operation |
+| File and folder sanitization | Implemented & Safety-Controlled | Implemented with target validation, symlink/reparse protection, controlled processing, verification, and explicit outcome states |
+| Secure drive sanitization | Controlled / Inspection & Planning Boundary | KRYVORA provides device inspection, target identity assessment, safety policy, and sanitization planning. Physical drive erase execution remains intentionally disabled pending platform-specific validation |
+| Validated recovery | Validated Recovery for Supported Formats | Validated recovery is available for the currently supported artifact formats. Unsupported or inconclusive candidates are not represented as successful recovery |
+| Fragmented reconstruction | Future Extension | Fragmented-file reconstruction and advanced cross-fragment recovery are future extensions. The current recovery pipeline intentionally stops at the validated supported-artifact boundary |
 
 ## Key Features
 
@@ -143,7 +145,7 @@ flowchart TD
 |---|---|---|
 | Secure drive sanitization | Protected device workflow boundary with inspection and policy models | Controlled boundary; active erase not exposed |
 | Secure file and folder erasure | Overwrite workflow with path and integrity checks | Implemented in scope |
-| Deleted file recovery / carving | Signature scanning and candidate validation | Partial but functional |
+| Supported-format carving and recovery | Signature scanning and candidate validation for supported contiguous formats; not filesystem deleted-entry recovery | Implemented — Supported Artifact Scope |
 | Forensic analysis | Case-based evidence workflow and investigation results | Operational in scope |
 | SHA-256 evidence integrity | Streaming hash generation and comparison | Implemented |
 | Validation | Evidence verification and result validation | Implemented |

@@ -25,10 +25,12 @@ The platform is designed for:
 |---|---|---|
 | Case and evidence registration | Implemented | Case creation and regular-file evidence registration with canonical path, size and digest |
 | Evidence integrity | Implemented | Streaming SHA-256 verification with byte-size comparison and audit events |
-| File/folder sanitization | Partial but controlled | Random overwrite workflow with path validation, explicit outcomes, and audit logging |
-| Drive sanitization | Controlled boundary | Device inspection and policy models are present, but drive erase remains intentionally not exposed |
-| Carving and recovery | Partial | Contiguous JPEG, PNG, and PDF signature scanning and validation |
-| Jobs | Partial | Job lifecycle persistence exists, with workflow visibility focused on persisted results |
+| File/folder sanitization | Implemented & Safety-Controlled | Implemented with target validation, symlink/reparse protection, controlled processing, verification, and explicit outcome states |
+| Drive sanitization | Controlled / Inspection & Planning Boundary | Device inspection, target identity assessment, safety policy, and sanitization planning are available; physical drive erase execution remains disabled pending platform-specific validation |
+| File carving and recovery | Implemented — Supported Artifact Scope | Operational bounded carving and validated recovery for supported artifact formats, with integrity checks, validation, provenance, and controlled output |
+| Validated recovery | Validated Recovery for Supported Formats | Unsupported or inconclusive candidates are not represented as successful recovery |
+| Fragmented reconstruction | Future Extension | Fragmented-file reconstruction and advanced cross-fragment recovery are future extensions; current recovery stops at the validated supported-artifact boundary |
+| Jobs | Implemented in scope | Job lifecycle persistence with workflow visibility focused on persisted results |
 | Audit trail | Implemented | Canonical hash-linked event sequence and chain verification |
 | Reporting | Implemented in scope | HTML recovery report creation with persisted metadata and digest accounting |
 | Validation and performance views | Implemented in scope | Persistence and verification views are present; they do not claim exhaustive certification |
@@ -55,8 +57,8 @@ See [04. SIH Requirement Mapping](04_SIH_REQUIREMENT_MAPPING.md).
 ## 1.8 Status Vocabulary
 
 - Implemented: the described code path exists and is exercised by repository logic or tests.
-- Partial: the capability exists in operational scope but has concrete boundaries or missing integration points.
-- Controlled boundary: the feature is intentionally protected or disabled to preserve safety and operational integrity.
+- Boundary-limited: an operational capability has a defined supported scope or missing integration points.
+- Controlled / inspection and planning boundary: device inspection or planning exists while destructive execution is disabled to preserve safety.
 - Unsupported: the current application does not expose the capability as an active workflow.
 
 ## 1.9 Source References

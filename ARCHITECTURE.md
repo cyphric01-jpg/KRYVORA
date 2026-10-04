@@ -49,16 +49,17 @@ flowchart LR
 - evidence-aware operations that preserve source identity and integrity
 - audit-first design for source, recovery, and operational events
 - policy-focused safety boundaries for destructive workflows
-- transparent status reporting for partial or constrained capabilities
+- transparent status reporting for bounded or constrained capabilities
 
 ## 5. Operational boundaries
 
 The architecture is intentionally clear about what is implemented and what remains a controlled boundary.
 
 - Evidence registration and verification are implemented for regular files.
-- Carving is currently bounded to supported contiguous signatures.
-- Sanitization is implemented with explicit result states and safety checks.
-- Drive-level erase remains an intentionally disabled execution path rather than an active capability.
+- Carving provides bounded scanning and validated recovery for supported contiguous signatures.
+- File and folder sanitization is implemented with target validation, safety checks, verification, and explicit result states.
+- Drive-level erase remains intentionally disabled pending platform-specific validation; device inspection and sanitization planning remain available.
+- Fragmented-file reconstruction and advanced cross-fragment recovery remain future extensions.
 
 ## 6. Source of truth
 

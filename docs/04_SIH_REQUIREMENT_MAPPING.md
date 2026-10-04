@@ -7,8 +7,8 @@ The matrix below reflects repository behavior and implementation status, not a c
 | SIH requirement | KRYVORA module | Implemented capability | User-facing location | Backend component | Validation method | Status |
 |---|---|---|---|---|---|---|
 | Secure drive eraser | Drive Eraser | Device inspection and policy models exist; no active drive-sanitize execution is exposed | Drive Eraser route | `kryvora-storage`, `kryvora-policy` | Storage inspection and policy tests | Controlled boundary |
-| Secure file and folder eraser | File / Folder Eraser | Random overwrite, digest comparison, path protections and outcome reporting | Sanitize route | `kryvora-sanitize` | Crate integration tests and CLI tests | Partial |
-| Advanced file carving and recovery | Analyze / Recover | Streaming scan and validation for JPEG, PNG and PDF candidates | Recover and Investigate routes | `kryvora-carving`, `kryvora-recovery`, `kryvora-provenance` | Scanner and recovery tests | Partial |
+| Secure file and folder eraser | File / Folder Eraser | Target validation, symlink/reparse protection, controlled processing, verification, and explicit outcomes | Sanitize route | `kryvora-sanitize` | Crate integration tests and CLI tests | Implemented & Safety-Controlled |
+| Advanced file carving and recovery | Analyze / Recover | Bounded scan and validated recovery for supported contiguous JPEG, PNG, and PDF artifacts, with integrity checks and provenance | Recover and Investigate routes | `kryvora-carving`, `kryvora-recovery`, `kryvora-provenance` | Scanner and recovery tests | Implemented — Supported Artifact Scope |
 | Reporting and audit management | Reports, Audit | Audit verification and recovery report generation with stored metadata | Audit and Reports routes | `kryvora-audit`, `kryvora-report`, `kryvora-db` | Audit-chain and report tests | Implemented in scope |
 | Dashboard | Command Center | Case, evidence, job, result and report summaries | Dashboard route | Tauri list queries | Frontend build and route inspection | Implemented |
 | Validation | Validation Center | Persistence states and audit chain verification | Validation route | Tauri verification calls | Rust verification tests | Implemented in scope |
@@ -22,10 +22,12 @@ The matrix below reflects repository behavior and implementation status, not a c
 | Status | Count |
 |---|---:|
 | Implemented | 4 |
-| Partial | 4 |
+| Partial | 1 |
+| Implemented & Safety-Controlled | 1 |
+| Implemented — Supported Artifact Scope | 1 |
 | Implemented in scope | 2 |
 | Controlled boundary | 1 |
-| Total mapped deliverables | 11 |
+| Total mapped deliverables | 10 |
 
 The summary reflects implementation coverage and operational boundaries, not a weighted claim of full forensic product completion.
 
@@ -34,6 +36,7 @@ The summary reflects implementation coverage and operational boundaries, not a w
 - no universal drive-erasure guarantee is made
 - no full forensic imaging workflow is claimed
 - no partition or filesystem reconstruction is presented as complete
+- fragmented-file reconstruction and advanced cross-fragment recovery remain future extensions
 - no production-media sanitization certification is claimed
 - no live benchmark study is described as representative of all hardware or deployments
 

@@ -49,9 +49,10 @@ A drive-level sanitization flow is intentionally represented as a controlled bou
 |---|---|
 | Case and evidence registration | Implemented |
 | SHA-256 calculation and verification | Implemented |
-| Contiguous signature carving and validation | Partial |
-| File/folder overwrite workflow | Partial |
-| Drive sanitization | Controlled boundary |
+| Contiguous signature carving and validated recovery for supported formats | Implemented — Supported Artifact Scope |
+| File/folder sanitization | Implemented & Safety-Controlled |
+| Drive sanitization | Controlled / Inspection & Planning Boundary |
+| Fragmented-file reconstruction | Future Extension |
 | Recovery report generation | Implemented in scope |
 
 See also [06. Module Documentation](06_MODULE_DOCUMENTATION.md) and [15. Known Limitations](15_KNOWN_LIMITATIONS.md).

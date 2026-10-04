@@ -1,12 +1,12 @@
 # 06. Module Documentation
 
-## 6.1 Secure Drive Eraser
+## 6.1 Drive Sanitization — Controlled / Inspection & Planning Boundary
 
-The drive sanitization concept is represented in the storage and policy crates, but the active desktop workflow intentionally keeps drive erasure behind a safety boundary. The application does not expose a raw device wipe command and therefore avoids claiming an operational drive-level erase competency.
+KRYVORA provides device inspection, target identity assessment, safety policy, and sanitization planning. Physical drive erase execution remains intentionally disabled pending platform-specific validation.
 
-## 6.2 Secure File and Folder Eraser
+## 6.2 File/Folder Sanitization — Implemented & Safety-Controlled
 
-The sanitization workflow is implemented for file and directory targets with path restrictions, type validation, and post-operation hash comparison. The backend returns explicit outcomes and does not treat a destructive overwrite as equivalent to a universal erase guarantee.
+The sanitization workflow is implemented with target validation, symlink/reparse protection, controlled processing, verification, and explicit outcome states. It does not treat a destructive overwrite as equivalent to a universal erase guarantee.
 
 Key behavior includes:
 
@@ -16,16 +16,18 @@ Key behavior includes:
 - write randomized bytes and compare digest before/after the operation
 - classify outcomes as success, partial, failed, or not verified
 
-## 6.3 Advanced File Carving and Recovery
+## 6.3 File Carving and Recovery — Implemented — Supported Artifact Scope
 
-The carving layer supports bounded scanning for contiguous JPEG, PNG, and PDF signatures. Recovery checks candidate validity and records offset, length, validation state, confidence details, and provenance data.
+The carving layer provides operational bounded scanning and validated recovery for supported contiguous JPEG, PNG, and PDF formats, with integrity checks, validation, provenance, and controlled output. Recovery records offset, length, validation state, and confidence details.
 
 Current capabilities are intentionally scoped and reviewable:
 
 - signatures are scanned in bounded windows
 - only certain recognized file types are validated
-- contamination or unsupported structures are rejected or left metadata-only
+- unsupported or inconclusive candidates are rejected or left metadata-only, not represented as successful recovery
 - accepted results are persisted with source linkage and artifact metadata
+
+Fragmented-file reconstruction and advanced cross-fragment recovery are future extensions. The current recovery pipeline intentionally stops at the validated supported-artifact boundary.
 
 ## 6.4 Reporting and Audit Management
 

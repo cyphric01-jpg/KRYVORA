@@ -15,10 +15,11 @@ KRYVORA is a focused, operational forensic workstation with concrete defined bou
 - HTML recovery reporting with stored metadata
 - file/directory overwrite workflow with explicit outcomes
 
-## 15.3 Partial or Boundary-Limited
+## 15.3 Scope and Boundary Limitations
 
-- drive sanitization remains a controlled boundary rather than an active device-erasure feature
-- the recovery model is currently limited to supported contiguous signatures and selected formats
+- drive sanitization remains a controlled inspection and planning boundary; physical erase execution is intentionally disabled pending platform-specific validation
+- carving and validated recovery are limited to supported contiguous signatures and selected artifact formats
+- file/folder sanitization does not guarantee safe unlink or physical-media erasure on flash or remapped media
 - provenance is strong for evidence-to-candidate-to-artifact links, but broader graph completeness remains a future enhancement
 - performance measurements are representative baselines, not broad production benchmarks
 - the UI and local app path are designed for a desktop workstation, not a full enterprise multi-user forensic suite
@@ -31,7 +32,7 @@ KRYVORA is a focused, operational forensic workstation with concrete defined bou
 | Forensic acquisition | Not implemented as a workflow |
 | Partition and filesystem analysis | Outside current scope |
 | Deleted-entry recovery | Not implemented in current operational path |
-| Fragmented reconstruction | Not part of the present recovery engine |
+| Fragmented reconstruction | Future extension; the current recovery pipeline intentionally stops at the validated supported-artifact boundary |
 | Automated GUI E2E suite | Not included as a checked-in test harness |
 
 ## 15.5 Operational Guidance

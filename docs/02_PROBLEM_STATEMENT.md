@@ -36,7 +36,7 @@ KRYVORA provides a local Rust and Tauri application with SQLite persistence and 
 | Change detection | Re-hash and size comparison before/after analysis | Implemented |
 | Deleted-file analysis | Filesystem-aware deleted-entry parsing is outside the current scope | Controlled boundary |
 | Raw drive sanitization | Storage study and policy models exist, but no active drive erase workflow is exposed | Controlled boundary |
-| File recovery | Signature scan and validation for JPEG, PNG, and PDF | Partial |
+| File recovery | Bounded signature scanning and validated recovery for supported contiguous JPEG, PNG, and PDF formats | Implemented — Supported Artifact Scope |
 | Traceability | Evidence-to-candidate-to-artifact provenance | Implemented in scope |
 | Accountability | Hash-linked audit chain and event verification | Implemented |
 | Reporting | HTML recovery report generation with metadata and digest capture | Implemented in scope |
